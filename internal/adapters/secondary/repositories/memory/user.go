@@ -16,6 +16,10 @@ func NewUserRepositoryMock() *UserRepositoryMock {
 }
 
 func (r *UserRepositoryMock) Create(user *domain.User) *domain.DomainError {
+	if user.GetEmail() == "error@error.com" {
+		return domain.NewDomainError(domain.InvalidEmailFormat, "Invalid user email")
+	}
+
 	checkForCpf, _ := r.searchUserByCpf(user.GetCPF())
 	checkForEmail, _ := r.searchUserByEmail(user.GetEmail())
 
@@ -60,6 +64,10 @@ func (r *UserRepositoryMock) GetByEmail(user *domain.User) *domain.DomainError {
 }
 
 func (r *UserRepositoryMock) GetByCpfOrEmail(user *domain.User) *domain.DomainError {
+	if user.GetName() == "Error" {
+		return domain.NewDomainError(domain.InvalidNameRange, "Invalid user name")
+	}
+
 	existsByCpf, foundUserByCpf := r.searchUserByCpf(user.GetCPF())
 
 	if existsByCpf {
