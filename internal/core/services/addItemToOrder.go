@@ -6,16 +6,19 @@ import (
 )
 
 type AddItemToOrderService struct {
-	r  repositories.OrderRepositoryInterface
+	or repositories.OrderRepositoryInterface
 	ir repositories.ItemRepositoryInterface
 }
 
-func NewAddItemToOrderService() *AddItemToOrderService {
-	return &AddItemToOrderService{}
+func NewAddItemToOrderService(or repositories.OrderRepositoryInterface, ir repositories.ItemRepositoryInterface) *AddItemToOrderService {
+	return &AddItemToOrderService{
+		or: or,
+		ir: ir,
+	}
 }
 
 func (s *AddItemToOrderService) Execute(orderId string, itemIDs []string) *domain.DomainError {
-	o, err := s.r.GetById(orderId)
+	o, err := s.or.GetById(orderId)
 	if err != nil {
 		return err
 	}
@@ -34,7 +37,7 @@ func (s *AddItemToOrderService) Execute(orderId string, itemIDs []string) *domai
 		}
 	}
 
-	err = s.r.Update(o)
+	err = s.or.Update(o)
 
 	if err != nil {
 		return err
