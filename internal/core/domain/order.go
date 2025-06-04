@@ -19,9 +19,9 @@ type Order struct {
 	price  int64
 }
 
-func NewOrder(id string, user *User) (*Order, *DomainError) {
+func NewOrder(user *User) (*Order, *DomainError) {
 	o := &Order{
-		id:     id,
+		id:     "",
 		user:   user,
 		items:  []*Item{},
 		status: Building,
@@ -117,4 +117,8 @@ func (o *Order) RemoveItem(itemID string) *DomainError {
 		}
 	}
 	return NewDomainError(ProductNotFoundInOrder, "Item not found in order")
+}
+
+func (o *Order) SetId(id string) {
+	o.id = id
 }
