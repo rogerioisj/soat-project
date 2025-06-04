@@ -1,4 +1,4 @@
-package services
+package order
 
 import (
 	"github.com/rogerioisj/soat-project/internal/core/domain"

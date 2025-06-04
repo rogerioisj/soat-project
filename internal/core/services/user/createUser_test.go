@@ -1,4 +1,4 @@
-package services
+package user
 
 import (
 	"github.com/rogerioisj/soat-project/internal/adapters/secondary/repositories/memory"
