@@ -10,6 +10,8 @@ const (
 	InvalidDescriptionRange ErrorCode = "invalid_description_range"
 	InvalidPriceRange       ErrorCode = "invalid_price_range"
 	InvalidProductType      ErrorCode = "invalid_product_type"
+	InvalidOrderStatus      ErrorCode = "invalid_order_status"
+	ProductNotFoundInOrder  ErrorCode = "product_not_found_in_order"
 )
 
 type DomainError struct {
