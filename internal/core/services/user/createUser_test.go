@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/rogerioisj/soat-project/internal/adapters/secondary/repositories/memory"
+	"github.com/rogerioisj/soat-project/internal/adapters/outbound/repositories/memory"
 	"github.com/rogerioisj/soat-project/internal/core/domain"
 	"github.com/rogerioisj/soat-project/internal/core/ports/repositories"
 	"strings"
