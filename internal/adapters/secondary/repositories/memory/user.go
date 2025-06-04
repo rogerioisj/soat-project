@@ -59,6 +59,30 @@ func (r *UserRepositoryMock) GetByEmail(user *domain.User) *domain.DomainError {
 	return nil
 }
 
+func (r *UserRepositoryMock) GetByCpfOrEmail(user *domain.User) *domain.DomainError {
+	existsByCpf, foundUserByCpf := r.searchUserByCpf(user.GetCPF())
+
+	if existsByCpf {
+		user.SetID(foundUserByCpf.GetID())
+		user.SetName(foundUserByCpf.GetName())
+		user.SetEmail(foundUserByCpf.GetEmail())
+		user.SetCPF(foundUserByCpf.GetCPF())
+		return nil
+	}
+
+	existsByEmail, foundUserByEmail := r.searchUserByEmail(user.GetEmail())
+
+	if existsByEmail {
+		user.SetID(foundUserByEmail.GetID())
+		user.SetName(foundUserByEmail.GetName())
+		user.SetEmail(foundUserByEmail.GetEmail())
+		user.SetCPF(foundUserByEmail.GetCPF())
+		return nil
+	}
+
+	return domain.NewDomainError(domain.UserNotFound, "User with this CPF or email not found")
+}
+
 func (r *UserRepositoryMock) searchUserByCpf(cpf string) (bool, *domain.User) {
 	for user := range r.users {
 		if r.users[user].GetCPF() == cpf {
