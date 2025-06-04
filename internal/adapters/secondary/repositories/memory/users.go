@@ -110,3 +110,17 @@ func (r *UserRepositoryMock) searchUserByEmail(email string) (bool, *domain.User
 
 	return false, nil
 }
+
+func (r *UserRepositoryMock) GetGuestUser(user *domain.User) *domain.DomainError {
+	for u := range r.users {
+		if r.users[u].GetName() == "Guest" {
+			user.SetID(r.users[u].GetID())
+			user.SetName(r.users[u].GetName())
+			user.SetEmail(r.users[u].GetEmail())
+			user.SetCPF(r.users[u].GetCPF())
+			return nil
+		}
+	}
+
+	return domain.NewDomainError(domain.UserNotFound, "Guest user not found")
+}
