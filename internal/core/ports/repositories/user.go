@@ -7,4 +7,5 @@ type UserRepositoryInterface interface {
 	GetByCpf(user *domain.User, cpf string) *domain.DomainError
 	GetByEmail(user *domain.User) *domain.DomainError
 	GetByCpfOrEmail(user *domain.User) *domain.DomainError
+	GetGuestUser(user *domain.User) *domain.DomainError
 }
