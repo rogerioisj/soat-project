@@ -98,10 +98,6 @@ func (o *Order) SetStatus(status OrderStatus) *DomainError {
 }
 
 func (o *Order) AddItem(item *Item) *DomainError {
-	if item.GetProductType() == "" {
-		return NewDomainError(InvalidProductType, "Invalid product type")
-	}
-
 	if o.status != Building {
 		return NewDomainError(InvalidOrderStatus, "Cannot add items to an order that is not in building status")
 	}
