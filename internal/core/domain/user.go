@@ -45,6 +45,22 @@ func (u *User) GetCPF() string {
 	return u.cpf
 }
 
+func (u *User) SetID(id string) {
+	u.id = id
+}
+
+func (u *User) SetName(name string) {
+	u.name = name
+}
+
+func (u *User) SetEmail(email string) {
+	u.email = email
+}
+
+func (u *User) SetCPF(cpf string) {
+	u.cpf = cpf
+}
+
 func (u *User) validateName() *DomainError {
 	if len(u.name) < 3 || len(u.name) > 100 {
 		return NewDomainError(InvalidNameRange, "Name must be between 3 and 100 characters")
