@@ -12,6 +12,8 @@ const (
 	InvalidProductType      ErrorCode = "invalid_product_type"
 	InvalidOrderStatus      ErrorCode = "invalid_order_status"
 	ProductNotFoundInOrder  ErrorCode = "product_not_found_in_order"
+	UserAlreadyExists       ErrorCode = "user_already_exists"
+	UserNotFound            ErrorCode = "user_not_found"
 )
 
 type DomainError struct {
