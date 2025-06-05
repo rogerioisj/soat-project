@@ -20,7 +20,7 @@ VALUES
     ('Coxinha', 500, 'Coxinha de frango com massa crocante', 'snack'),
     ('Pão de Queijo', 300, 'Pão de queijo quentinho e saboroso', 'snack'),
     ('Pastel de Carne', 450, 'Pastel de carne moída com massa fina', 'snack'),
-    ('Hamburgue de Patinho', 700, 'Hamburgue de patinho grelhado com queijo', 'snack'),
+    ('Hamburguer de Patinho', 700, 'Hamburguer de patinho grelhado com queijo', 'snack'),
     ('Água com Gás', 100, 'Água com gás refrescante', 'drink'),
     ('Água Mineral', 150, 'Água mineral gelada', 'drink'),
     ('Refrigerante', 250, 'Refrigerante gelado', 'drink'),
