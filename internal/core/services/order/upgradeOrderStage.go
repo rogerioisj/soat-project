@@ -16,7 +16,9 @@ func NewUpgradeOrderStageService(or repositories.OrderRepositoryInterface) *Upgr
 }
 
 func (s *UpgradeOrderStageService) Execute(orderId string) *domain.DomainError {
-	o, err := s.or.GetById(orderId)
+	var o domain.Order
+
+	err := s.or.GetById(orderId, &o)
 	if err != nil {
 		return err
 	}
@@ -31,7 +33,7 @@ func (s *UpgradeOrderStageService) Execute(orderId string) *domain.DomainError {
 		return err
 	}
 
-	err = s.or.Update(o)
+	err = s.or.Update(&o)
 
 	if err != nil {
 		return err
