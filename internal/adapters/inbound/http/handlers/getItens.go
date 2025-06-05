@@ -66,12 +66,12 @@ func (h *GetItensHandler) Execute(w http.ResponseWriter, r *http.Request) {
 
 	responseArray := make([]map[string]interface{}, len(itens))
 
-	for i, item := range itens {
+	for i, itemInstance := range itens {
 		responseArray[i] = map[string]interface{}{
-			"ID":          item.GetID(),
-			"Name":        item.GetName(),
-			"Price":       item.GetPrice(),
-			"Description": item.GetDescription(),
+			"ID":          itemInstance.GetID(),
+			"Name":        itemInstance.GetName(),
+			"Price":       itemInstance.GetPrice(),
+			"Description": itemInstance.GetDescription(),
 		}
 	}
 
