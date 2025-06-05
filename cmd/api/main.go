@@ -27,11 +27,13 @@ func main() {
 	getItensService := item.NewGetItensBasedOnCategoryService(itemRepository)
 
 	createOrderService := order.NewCreateOrderService(orderRepository, userRepository)
+	upgradeOrderService := order.NewUpgradeOrderStageService(orderRepository)
 
 	guh := handlers.NewGetUserByCpfHandler(identifyWithCpfService)
 	cuh := handlers.NewCreateUser(createUserService)
 	gih := handlers.NewGetItensHandler(getItensService)
 	coh := handlers.NewCreateOrderHandler(createOrderService)
+	uoh := handlers.NewUpgradeOrderStageHandler(upgradeOrderService)
 
 	http.HandleFunc("GET /user", guh.Execute)
 	http.HandleFunc("POST /user", cuh.Execute)
@@ -39,6 +41,7 @@ func main() {
 	http.HandleFunc("GET /itens", gih.Execute)
 
 	http.HandleFunc("POST /order", coh.Execute)
+	http.HandleFunc("PATCH /order", uoh.Execute)
 
 	fmt.Println("Listening on port 8080")
 	fmt.Println("GET http://127.0.0.1:8080")
