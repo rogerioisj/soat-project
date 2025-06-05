@@ -53,6 +53,26 @@ func (i *Item) GetProductType() ProductType {
 	return i.productType
 }
 
+func (i *Item) SetID(id string) {
+	i.id = id
+}
+
+func (i *Item) SetName(name string) {
+	i.name = name
+}
+
+func (i *Item) SetDescription(description string) {
+	i.description = description
+}
+
+func (i *Item) SetPrice(price int64) {
+	i.price = price
+}
+
+func (i *Item) SetProductType(productType ProductType) {
+	i.productType = productType
+}
+
 func (i *Item) ValidateName() *DomainError {
 	if len(i.name) < 3 || len(i.name) > 100 {
 		return NewDomainError(InvalidNameRange, "Name must be between 3 and 100 characters")
