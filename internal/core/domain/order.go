@@ -11,19 +11,37 @@ const (
 	Done      OrderStatus = "done"
 )
 
-type Order struct {
-	id     string
-	user   *User
-	items  []*Item
-	status OrderStatus
-	price  int64
+type ItemOrderElement struct {
+	ItemID   string
+	Quantity int
 }
 
-func NewOrder(user *User) (*Order, *DomainError) {
+type Order struct {
+	id        string
+	user      User
+	items     []Item
+	ItemOrder []ItemOrderElement
+	status    OrderStatus
+	price     int64
+}
+
+func NewOrder(user User) (*Order, *DomainError) {
 	o := &Order{
 		id:     "",
 		user:   user,
-		items:  []*Item{},
+		items:  []Item{},
+		status: Building,
+		price:  0,
+	}
+
+	return o, nil
+}
+
+func NewOrderWithoutUser() (*Order, *DomainError) {
+	o := &Order{
+		id:     "",
+		user:   User{},
+		items:  []Item{},
 		status: Building,
 		price:  0,
 	}
@@ -36,11 +54,15 @@ func (o *Order) GetID() string {
 }
 
 func (o *Order) GetUser() *User {
-	return o.user
+	return &o.user
 }
 
-func (o *Order) GetItems() []*Item {
-	return o.items
+func (o *Order) GetItems() *[]Item {
+	return &o.items
+}
+
+func (o *Order) AddItemOrder(itemOrder []ItemOrderElement) {
+	o.ItemOrder = itemOrder
 }
 
 func (o *Order) GetPrice() int64 {
@@ -97,7 +119,7 @@ func (o *Order) SetStatus(status OrderStatus) *DomainError {
 	return nil
 }
 
-func (o *Order) AddItem(item *Item) *DomainError {
+func (o *Order) AddItem(item Item) *DomainError {
 	if o.status != Building {
 		return NewDomainError(InvalidOrderStatus, "Cannot add items to an order that is not in building status")
 	}
@@ -121,4 +143,8 @@ func (o *Order) RemoveItem(itemID string) *DomainError {
 
 func (o *Order) SetId(id string) {
 	o.id = id
+}
+
+func (o *Order) SetUser(user User) {
+	o.user = user
 }
