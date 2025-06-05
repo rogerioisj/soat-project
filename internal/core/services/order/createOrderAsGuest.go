@@ -26,7 +26,7 @@ func (s *CreateOrderAsGuestService) Execute() (*domain.Order, *domain.DomainErro
 		return nil, err
 	}
 
-	o, err := domain.NewOrder(u)
+	o, err := domain.NewOrder(*u)
 
 	if err != nil {
 		return nil, err
