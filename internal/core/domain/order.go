@@ -3,12 +3,13 @@ package domain
 type OrderStatus string
 
 const (
-	Building  OrderStatus = "building"
-	Cancelled OrderStatus = "cancelled"
-	Received  OrderStatus = "received"
-	Preparing OrderStatus = "preparing"
-	Ready     OrderStatus = "ready"
-	Done      OrderStatus = "done"
+	Building       OrderStatus = "building"
+	Cancelled      OrderStatus = "cancelled"
+	WaitingPayment OrderStatus = "waiting_payment"
+	Received       OrderStatus = "received"
+	Preparing      OrderStatus = "preparing"
+	Ready          OrderStatus = "ready"
+	Done           OrderStatus = "done"
 )
 
 type ItemOrderElement struct {
