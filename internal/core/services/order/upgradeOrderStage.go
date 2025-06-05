@@ -27,11 +27,7 @@ func (s *UpgradeOrderStageService) Execute(orderId string) *domain.DomainError {
 
 	stage = defineNewStage(stage)
 
-	err = o.SetStatus(stage)
-
-	if err != nil {
-		return err
-	}
+	o.SetStatus(stage)
 
 	err = s.or.Update(&o)
 
@@ -53,6 +49,6 @@ func defineNewStage(stage domain.OrderStatus) domain.OrderStatus {
 	case domain.Ready:
 		return domain.Done
 	default:
-		return stage // No change for Done or Cancelled
+		return stage
 	}
 }
