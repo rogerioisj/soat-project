@@ -75,8 +75,14 @@ func (h *GetItensHandler) Execute(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	responseBody := map[string]interface{}{
+		"items": responseArray,
+		"page":  pageInt,
+		"limit": limitInt,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(responseArray)
+	err = json.NewEncoder(w).Encode(responseBody)
 	if err != nil {
 		http.Error(w, "Error encoding response: "+err.Error(), http.StatusInternalServerError)
 		return
