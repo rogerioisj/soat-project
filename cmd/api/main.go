@@ -18,10 +18,13 @@ func main() {
 	userRepository := postgres.NewUserRepository(db)
 
 	identifyWithCpfService := user.NewIdentifyWithCpfService(userRepository)
+	createUserService := user.NewCreateUserService(userRepository)
 
-	uh := handlers.NewGetUserByCpfHandler(identifyWithCpfService)
+	guh := handlers.NewGetUserByCpfHandler(identifyWithCpfService)
+	cuh := handlers.NewCreateUser(createUserService)
 
-	http.HandleFunc("GET /user", uh.Execute)
+	http.HandleFunc("GET /user", guh.Execute)
+	http.HandleFunc("POST /user", cuh.Execute)
 
 	fmt.Println("Listening on port 8080")
 	fmt.Println("GET http://127.0.0.1:8080")
