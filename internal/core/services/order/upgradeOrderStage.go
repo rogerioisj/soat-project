@@ -25,6 +25,10 @@ func (s *UpgradeOrderStageService) Execute(orderId string) *domain.DomainError {
 
 	stage := o.GetStatus()
 
+	if stage == domain.Done {
+		return domain.NewDomainError("Invalid Stage", "Order is already completed")
+	}
+
 	stage = defineNewStage(stage)
 
 	o.SetStatus(stage)

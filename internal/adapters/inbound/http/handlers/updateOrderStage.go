@@ -24,7 +24,7 @@ func (h *UpgradeOrderStageHandler) Execute(w http.ResponseWriter, r *http.Reques
 	}
 
 	err := h.s.Execute(orderID)
-	if err != nil && err.Error() != "No order found with the given ID" {
+	if err != nil && err.Error() != "No order found with the given ID" && err.Error() != "Order is already completed" {
 		log.Print("Error upgrading order stage: ", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
