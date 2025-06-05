@@ -6,7 +6,7 @@ import (
 )
 
 type IdentifyWithCpfServiceInterface interface {
-	Execute(cpf string) (*domain.User, error)
+	Execute(cpf string) (*domain.User, *domain.DomainError)
 }
 type IdentifyWithCpfService struct {
 	r repositories.UserRepositoryInterface
