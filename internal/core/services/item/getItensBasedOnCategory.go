@@ -15,11 +15,12 @@ func NewGetItensBasedOnCategoryService(ir repositories.ItemRepositoryInterface) 
 	}
 }
 
-func (s *GetItensBasedOnCategoryService) Execute(category string, page, limit int32) ([]*domain.Item, *domain.DomainError) {
-	items, err := s.ir.ListByType(category, page, limit)
+func (s *GetItensBasedOnCategoryService) Execute(category string, page, limit int32, itens *[]domain.Item) *domain.DomainError {
+
+	err := s.ir.ListByType(category, page, limit, itens)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return items, nil
+	return nil
 }
