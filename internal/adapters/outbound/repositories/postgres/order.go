@@ -99,6 +99,8 @@ func (r *OrderRepository) GetById(id string, order *domain.Order) *domain.Domain
 		nextOrderStage = domain.Cancelled
 	case "building":
 		nextOrderStage = domain.Building
+	case "waiting_payment":
+		nextOrderStage = domain.WaitingPayment
 	}
 
 	order.SetStatus(nextOrderStage)
