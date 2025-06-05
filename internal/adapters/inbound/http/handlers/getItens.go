@@ -45,6 +45,10 @@ func (h *GetItensHandler) Execute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if pageInt < 1 {
+		pageInt = 1
+	}
+
 	if category != "snack" && category != "drink" && category != "dessert" && category != "accompaniment" {
 		http.Error(w, "Invalid category", http.StatusBadRequest)
 		return
