@@ -1,6 +1,7 @@
 package order
 
 import (
+	"github.com/rogerioisj/soat-project/internal/adapters/inbound/http/dtos"
 	"github.com/rogerioisj/soat-project/internal/core/domain"
 	"github.com/rogerioisj/soat-project/internal/core/ports/repositories"
 )
@@ -17,26 +18,38 @@ func NewCreateOrderService(r repositories.OrderRepositoryInterface, ur repositor
 	}
 }
 
-func (s *CreateOrderService) Execute() (*domain.Order, *domain.DomainError) {
+func (s *CreateOrderService) Execute(userId string, itens *[]dtos.Product, o *domain.Order) *domain.DomainError {
 	u := &domain.User{}
 
-	err := s.ur.GetByCpf(u, u.GetCPF())
+	err := s.ur.GetByID(u, userId)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	o, err := domain.NewOrder(u)
+	o.SetUser(*u)
+
+	var itemOrder []domain.ItemOrderElement
+
+	for _, item := range *itens {
+		io := domain.ItemOrderElement{
+			ItemID:   item.ID,
+			Quantity: item.Quantity,
+		}
+		itemOrder = append(itemOrder, io)
+	}
+
+	o.AddItemOrder(itemOrder)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = s.r.Create(o)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return o, nil
+	return nil
 }
