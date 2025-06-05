@@ -2,7 +2,7 @@ CREATE TYPE order_status AS ENUM (
     'building',
     'cancelled',
     'received',
-    'confirmed',
+    'preparing',
     'ready',
     'done'
 );
