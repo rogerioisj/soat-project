@@ -105,3 +105,22 @@ func (r *UserRepository) GetGuestUser(user *domain.User) *domain.DomainError {
 
 	return nil
 }
+
+func (r *UserRepository) GetByID(user *domain.User, id string) *domain.DomainError {
+	row := r.db.QueryRow("SELECT name, email, cpf FROM users WHERE id = $1", id)
+
+	var name, email, cpf string
+	if err := row.Scan(&name, &email, &cpf); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return domain.NewDomainError(domain.UserNotFound, "User with this ID not found")
+		}
+		return domain.NewDomainError("Database Error", "Error querying user by ID")
+	}
+
+	user.SetID(id)
+	user.SetName(name)
+	user.SetEmail(email)
+	user.SetCPF(cpf)
+
+	return nil
+}
