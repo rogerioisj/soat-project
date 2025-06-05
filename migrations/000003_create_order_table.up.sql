@@ -1,15 +1,15 @@
 CREATE TYPE order_status AS ENUM (
-    'pending',
-    'preparing',
-    'ready',
-    'delivered',
+    'building',
     'cancelled',
+    'received',
+    'confirmed',
+    'ready',
     'done'
 );
 
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    status order_status NOT NULL DEFAULT 'pending',
+    status order_status NOT NULL DEFAULT 'building',
     user_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
