@@ -48,8 +48,8 @@ func (r *UserRepositoryMock) GetByCpf(user *domain.User, cpf string) *domain.Dom
 	return nil
 }
 
-func (r *UserRepositoryMock) GetByEmail(user *domain.User) *domain.DomainError {
-	exists, foundUser := r.searchUserByEmail(user.GetEmail())
+func (r *UserRepositoryMock) GetByEmail(user *domain.User, email string) *domain.DomainError {
+	exists, foundUser := r.searchUserByEmail(email)
 
 	if !exists {
 		return domain.NewDomainError(domain.UserNotFound, "User with this email not found")
