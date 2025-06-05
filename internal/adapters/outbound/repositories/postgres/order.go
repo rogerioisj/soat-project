@@ -60,10 +60,71 @@ func (r *OrderRepository) Create(order *domain.Order) *domain.DomainError {
 }
 
 func (r *OrderRepository) GetById(id string, order *domain.Order) *domain.DomainError {
+	transaction, err := r.db.Begin()
+	if err != nil {
+		log.Print("Error starting transaction: ", err)
+		return domain.NewDomainError("Database Error", "Error starting transaction")
+	}
+
+	var orderStatus string
+
+	row := transaction.QueryRow("SELECT status FROM orders WHERE id = $1", id)
+	if err := row.Scan(&orderStatus); err != nil {
+		if err == sql.ErrNoRows {
+			log.Print("No order found with the given ID")
+			return domain.NewDomainError("Order Not Found", "No order found with the given ID")
+		}
+		log.Print("Error retrieving order: ", err)
+		transaction.Rollback()
+		return domain.NewDomainError("Database Error", "Error retrieving order")
+	}
+
+	if err := transaction.Commit(); err != nil {
+		log.Print("Error committing transaction: ", err)
+		return domain.NewDomainError("Database Error", "Error committing transaction")
+	}
+
+	var nextOrderStage domain.OrderStatus
+
+	switch orderStatus {
+	case "received":
+		nextOrderStage = domain.Received
+	case "preparing":
+		nextOrderStage = domain.Preparing
+	case "ready":
+		nextOrderStage = domain.Ready
+	case "done":
+		nextOrderStage = domain.Done
+	case "cancelled":
+		nextOrderStage = domain.Cancelled
+	case "building":
+		nextOrderStage = domain.Building
+	}
+
+	order.SetStatus(nextOrderStage)
+	order.SetId(id)
+
 	return nil
 }
 
 func (r *OrderRepository) Update(order *domain.Order) *domain.DomainError {
-	// Implement the update logic here
+	transaction, err := r.db.Begin()
+	if err != nil {
+		log.Print("Error starting transaction: ", err)
+		return domain.NewDomainError("Database Error", "Error starting transaction")
+	}
+
+	_, err = transaction.Exec("UPDATE orders SET status = $1 WHERE id = $2", order.GetStatus(), order.GetID())
+	if err != nil {
+		log.Print("Error updating order status: ", err)
+		transaction.Rollback()
+		return domain.NewDomainError("Database Error", "Error updating order status")
+	}
+
+	if err := transaction.Commit(); err != nil {
+		log.Print("Error committing transaction: ", err)
+		return domain.NewDomainError("Database Error", "Error committing transaction")
+	}
+
 	return nil
 }
