@@ -6,7 +6,7 @@ import (
 )
 
 type CreateUserServiceInterface interface {
-	Execute(name, email, cpf string) (*domain.User, error)
+	Execute(name, email, cpf string) (*domain.User, *domain.DomainError)
 }
 
 type CreateUserService struct {
