@@ -41,10 +41,6 @@ func (s *CreateOrderService) Execute(userId string, itens *[]dtos.Product, o *do
 
 	o.AddItemOrder(itemOrder)
 
-	if err != nil {
-		return err
-	}
-
 	err = s.r.Create(o)
 
 	if err != nil {
