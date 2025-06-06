@@ -30,3 +30,6 @@ Content-Type: application/json
   "price": 800,
   "category": "snack"
 }
+
+### DELETE item
+DELETE http://localhost:8080/item/1
