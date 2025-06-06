@@ -18,6 +18,7 @@ const (
 	InvalidItemName         ErrorCode = "invalid_item_name"
 	NilItemInstance         ErrorCode = "nil_item_instance"
 	InvalidItemPrice        ErrorCode = "invalid_item_price"
+	ItemNotFound            ErrorCode = "item_not_found"
 )
 
 type DomainError struct {
