@@ -1,0 +1,21 @@
+### POST Create Item
+POST http://localhost:8080/item
+Content-Type: application/json
+
+{
+  "name": "Coxinha de alho poró",
+  "description": "Coxinha recheada com alho poró e bastante crocrante",
+  "price": 800,
+  "category": "snack"
+}
+### GET Load accompaniment items
+GET http://localhost:8080/itens?category=accompaniment&page=2&limit=2
+
+### GET Load snacks items
+GET http://localhost:8080/itens?category=snack&page=3&limit=2
+
+### GET Load drinks items
+GET http://localhost:8080/itens?category=drink&page=1&limit=2
+
+### GET Load desserts items
+GET http://localhost:8080/itens?category=dessert&page=1&limit=2
