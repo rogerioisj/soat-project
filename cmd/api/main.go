@@ -25,6 +25,8 @@ func main() {
 
 	getItensService := item.NewGetItensBasedOnCategoryService(itemRepository)
 	createItemService := item.NewCreateItemService(itemRepository)
+	updateItemService := item.NewUpdateItemService(itemRepository)
+	deleteItemService := item.NewDeleteItemService(itemRepository)
 
 	createOrderService := order.NewCreateOrderService(orderRepository, userRepository)
 	upgradeOrderService := order.NewUpgradeOrderStageService(orderRepository)
@@ -35,6 +37,8 @@ func main() {
 
 	gih := handlers.NewGetItensHandler(getItensService)
 	cih := handlers.NewCreateItemHandler(createItemService)
+	uih := handlers.NewUpdateItemHandler(updateItemService)
+	dih := handlers.NewDeleteItemHandler(deleteItemService)
 
 	coh := handlers.NewCreateOrderHandler(createOrderService)
 	uoh := handlers.NewUpgradeOrderStageHandler(upgradeOrderService)
@@ -45,6 +49,8 @@ func main() {
 
 	http.HandleFunc("POST /item", cih.Execute)
 	http.HandleFunc("GET /itens", gih.Execute)
+	http.HandleFunc("PUT /item/{id}", uih.Execute)
+	http.HandleFunc("DELETE /item/{id}", dih.Execute)
 
 	http.HandleFunc("POST /order", coh.Execute)
 	http.HandleFunc("PATCH /order", uoh.Execute)
