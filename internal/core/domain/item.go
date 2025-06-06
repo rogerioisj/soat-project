@@ -15,6 +15,7 @@ type Item struct {
 	description string
 	price       int64
 	productType ProductType
+	quantity    int64
 }
 
 func NewItem(id, name, description string, price int64, productType ProductType) (*Item, *DomainError) {
@@ -53,6 +54,10 @@ func (i *Item) GetProductType() ProductType {
 	return i.productType
 }
 
+func (i *Item) GetQuantity() int64 {
+	return i.quantity
+}
+
 func (i *Item) SetID(id string) {
 	i.id = id
 }
@@ -71,6 +76,10 @@ func (i *Item) SetPrice(price int64) {
 
 func (i *Item) SetProductType(productType ProductType) {
 	i.productType = productType
+}
+
+func (i *Item) SetQuantity(quantity int64) {
+	i.quantity = quantity
 }
 
 func (i *Item) ValidateName() *DomainError {
