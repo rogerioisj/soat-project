@@ -130,3 +130,106 @@ func (r *OrderRepository) Update(order *domain.Order) *domain.DomainError {
 
 	return nil
 }
+
+func (r *OrderRepository) ListActives(orders *[]domain.Order, offset, limit int) *domain.DomainError {
+	transaction, err := r.db.Begin()
+	if err != nil {
+		log.Print("Error starting transaction: ", err)
+		return domain.NewDomainError("Database Error", "Error starting transaction")
+	}
+
+	query := `
+			SELECT
+				o.id,
+				o.status,
+				o.created_at,
+				u.id as user_id,
+				u.name as user_name,
+				i.id as item_id,
+				i.name as item_name,
+				i.price as item_price,
+				oi.quantity as item_quantity
+			FROM
+			    orders o
+			LEFT JOIN users u ON o.user_id = u.id
+			LEFT JOIN orders_itens oi ON o.id = oi.order_id
+			LEFT JOIN itens i ON oi.item_id = i.id
+			WHERE 
+			    o.status <> 'done' and
+				o.status <> 'cancelled' and
+				o.status <> 'building' and
+				o.status <> 'waiting_payment'
+			ORDER BY o.created_at
+			LIMIT $1 OFFSET $2`
+
+	rows, err := transaction.Query(query, limit, offset)
+
+	if err != nil {
+		log.Print("Error querying orders: ", err)
+		transaction.Rollback()
+		return domain.NewDomainError("Database Error", "Error querying orders")
+	}
+	defer rows.Close()
+
+	ordersMap := make(map[string]domain.Order)
+
+	for rows.Next() {
+		var order domain.Order
+		var user domain.User
+		var item domain.Item
+
+		var orderId, orderStatus, userId, userName, itemId, itemName string
+		var itemPrice int64
+		var itemQuantity int64
+		var orderCreatedAt sql.NullTime
+
+		if err := rows.Scan(&orderId, &orderStatus, &orderCreatedAt, &userId, &userName, &itemId, &itemName, &itemPrice, &itemQuantity); err != nil {
+			log.Print("Error scanning order row: ", err)
+			transaction.Rollback()
+			return domain.NewDomainError("Database Error", "Error scanning order row")
+		}
+
+		user.SetName(userName)
+		user.SetID(userId)
+
+		order.SetUser(user)
+		order.SetId(orderId)
+		order.SetStatus(domain.OrderStatus(orderStatus))
+
+		if existingOrder, exists := ordersMap[orderId]; exists {
+			order = existingOrder
+		}
+
+		item.SetID(itemId)
+		item.SetName(itemName)
+		item.SetPrice(itemPrice)
+		item.SetQuantity(itemQuantity)
+
+		err2 := order.AddItem(item)
+
+		if err2 != nil {
+			log.Print("Error adding item to order: ", err2)
+			transaction.Rollback()
+			return domain.NewDomainError("Order Error", "Error adding item to order")
+		}
+
+		ordersMap[orderId] = order
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Print("Error iterating over order rows: ", err)
+		transaction.Rollback()
+		return domain.NewDomainError("Database Error", "Error iterating over order rows")
+	}
+
+	if err := transaction.Commit(); err != nil {
+		log.Print("Error committing transaction: ", err)
+		return domain.NewDomainError("Database Error", "Error committing transaction")
+	}
+
+	for _, order := range ordersMap {
+		*orders = append(*orders, order)
+	}
+
+	return nil
+}
