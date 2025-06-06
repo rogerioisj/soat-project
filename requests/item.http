@@ -12,10 +12,21 @@ Content-Type: application/json
 GET http://localhost:8080/itens?category=accompaniment&page=2&limit=2
 
 ### GET Load snacks items
-GET http://localhost:8080/itens?category=snack&page=3&limit=2
+GET http://localhost:8080/itens?category=snack&page=1&limit=2
 
 ### GET Load drinks items
 GET http://localhost:8080/itens?category=drink&page=1&limit=2
 
 ### GET Load desserts items
 GET http://localhost:8080/itens?category=dessert&page=1&limit=2
+
+### PUT update item
+PUT http://localhost:8080/item/1
+Content-Type: application/json
+
+{
+  "name": "Coxinha de frango com requeijão",
+  "description": "Coxinha recheada com frango e requeijão cremoso",
+  "price": 800,
+  "category": "snack"
+}
