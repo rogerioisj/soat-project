@@ -17,6 +17,33 @@ func NewItemRepository(db *sql.DB) *ItemRepository {
 }
 
 func (r *ItemRepository) Create(item *domain.Item) *domain.DomainError {
+	transaction, err := r.db.Begin()
+	if err != nil {
+		log.Printf("Error starting transaction: %v", err)
+		return domain.NewDomainError("Database Error", "Error starting transaction")
+	}
+
+	_, err = transaction.Exec("INSERT INTO itens (name, description, price, type) VALUES ($1, $2, $3, $4)",
+		item.GetName(),
+		item.GetDescription(),
+		item.GetPrice(),
+		item.GetProductType(),
+	)
+	if err != nil {
+		log.Printf("Error inserting item: %v", err)
+		if rollbackErr := transaction.Rollback(); rollbackErr != nil {
+			log.Printf("Error rolling back transaction: %v", rollbackErr)
+		}
+		return domain.NewDomainError("Database Error", "Error inserting item")
+	}
+
+	if err := transaction.Commit(); err != nil {
+		log.Printf("Error committing transaction: %v", err)
+		return domain.NewDomainError("Database Error", "Error committing transaction")
+	}
+
+	log.Printf("Item %s created successfully", item.GetName())
+
 	return nil
 }
 
