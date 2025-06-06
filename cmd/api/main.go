@@ -24,6 +24,7 @@ func main() {
 	createUserService := user.NewCreateUserService(userRepository)
 
 	getItensService := item.NewGetItensBasedOnCategoryService(itemRepository)
+	createItemService := item.NewCreateItemService(itemRepository)
 
 	createOrderService := order.NewCreateOrderService(orderRepository, userRepository)
 	upgradeOrderService := order.NewUpgradeOrderStageService(orderRepository)
@@ -31,7 +32,10 @@ func main() {
 
 	guh := handlers.NewGetUserByCpfHandler(identifyWithCpfService)
 	cuh := handlers.NewCreateUser(createUserService)
+
 	gih := handlers.NewGetItensHandler(getItensService)
+	cih := handlers.NewCreateItemHandler(createItemService)
+
 	coh := handlers.NewCreateOrderHandler(createOrderService)
 	uoh := handlers.NewUpgradeOrderStageHandler(upgradeOrderService)
 	gaoh := handlers.NewGetOrdersHandler(listActiveOrdersService)
@@ -39,6 +43,7 @@ func main() {
 	http.HandleFunc("GET /user", guh.Execute)
 	http.HandleFunc("POST /user", cuh.Execute)
 
+	http.HandleFunc("POST /item", cih.Execute)
 	http.HandleFunc("GET /itens", gih.Execute)
 
 	http.HandleFunc("POST /order", coh.Execute)
