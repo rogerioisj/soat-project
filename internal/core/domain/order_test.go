@@ -180,8 +180,8 @@ func AddItensToOrder(t *testing.T) {
 		return
 	}
 
-	if len(O.GetItems()) != 4 {
-		t.Error("Expected 4 items in order, got:", len(O.GetItems()))
+	if len(*O.GetItens()) != 4 {
+		t.Error("Expected 4 items in order, got:", len(*O.GetItens()))
 		return
 	}
 

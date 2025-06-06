@@ -58,7 +58,7 @@ func (o *Order) GetUser() *User {
 	return &o.user
 }
 
-func (o *Order) GetItems() *[]Item {
+func (o *Order) GetItens() *[]Item {
 	return &o.items
 }
 
@@ -98,9 +98,9 @@ func (o *Order) UpgradeStage() *DomainError {
 }
 
 func (o *Order) AddItem(item Item) *DomainError {
-	if o.status != Building {
+	/*if o.status != Building {
 		return NewDomainError(InvalidOrderStatus, "Cannot add items to an order that is not in building status")
-	}
+	}*/
 
 	o.items = append(o.items, item)
 	o.price += item.GetPrice()
