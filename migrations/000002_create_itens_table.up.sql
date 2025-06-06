@@ -11,6 +11,7 @@ CREATE TABLE itens (
     price INTEGER NOT NULL,
     description TEXT,
     type item_type NOT NULL,
+    deleted BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
