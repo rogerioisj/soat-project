@@ -15,7 +15,9 @@ const (
 	UserAlreadyExists       ErrorCode = "user_already_exists"
 	UserNotFound            ErrorCode = "user_not_found"
 	InvalidOrder            ErrorCode = "invalid_order"
-	ItemNotFound            ErrorCode = "item_not_found"
+	InvalidItemName         ErrorCode = "invalid_item_name"
+	NilItemInstance         ErrorCode = "nil_item_instance"
+	InvalidItemPrice        ErrorCode = "invalid_item_price"
 )
 
 type DomainError struct {
