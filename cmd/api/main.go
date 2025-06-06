@@ -44,7 +44,7 @@ func main() {
 	uoh := handlers.NewUpgradeOrderStageHandler(upgradeOrderService)
 	gaoh := handlers.NewGetOrdersHandler(listActiveOrdersService)
 
-	http.HandleFunc("GET /user", guh.Execute)
+	http.HandleFunc("GET /user/{cpf}", guh.Execute)
 	http.HandleFunc("POST /user", cuh.Execute)
 
 	http.HandleFunc("POST /item", cih.Execute)

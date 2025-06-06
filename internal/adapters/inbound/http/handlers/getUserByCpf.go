@@ -19,7 +19,7 @@ func NewGetUserByCpfHandler(s user.IdentifyWithCpfServiceInterface) *GetUserByCp
 }
 
 func (h *GetUserByCpfHandler) Execute(w http.ResponseWriter, r *http.Request) {
-	cpf := r.URL.Query().Get("cpf")
+	cpf := r.PathValue("cpf")
 
 	if cpf == "" {
 		http.Error(w, "CPF is required", http.StatusBadRequest)
