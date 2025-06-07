@@ -44,6 +44,8 @@ func main() {
 	uoh := handlers.NewUpgradeOrderStageHandler(upgradeOrderService)
 	gaoh := handlers.NewGetOrdersHandler(listActiveOrdersService)
 
+	ssdh := handlers.NewShowSwaggerDocHandler()
+
 	http.HandleFunc("GET /user/{cpf}", guh.Execute)
 	http.HandleFunc("POST /user", cuh.Execute)
 
@@ -55,6 +57,9 @@ func main() {
 	http.HandleFunc("POST /order", coh.Execute)
 	http.HandleFunc("PATCH /order/{id}", uoh.Execute)
 	http.HandleFunc("GET /orders", gaoh.Execute)
+
+	http.HandleFunc("GET /api/docs/openapi.yaml", ssdh.File)
+	http.HandleFunc("GET /", ssdh.GetOpenAPISpec)
 
 	log.Println("Listening on port 8080")
 	log.Println("GET http://127.0.0.1:8080")
