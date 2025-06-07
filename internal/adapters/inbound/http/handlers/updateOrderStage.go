@@ -17,7 +17,9 @@ func NewUpgradeOrderStageHandler(s *order.UpgradeOrderStageService) *UpgradeOrde
 }
 
 func (h *UpgradeOrderStageHandler) Execute(w http.ResponseWriter, r *http.Request) {
-	orderID := r.URL.Query().Get("id")
+	// orderID := r.URL.Query().Get("id")
+
+	orderID := r.PathValue("id")
 	if orderID == "" {
 		http.Error(w, "order_id is required", http.StatusBadRequest)
 		return

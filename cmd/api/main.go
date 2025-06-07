@@ -53,7 +53,7 @@ func main() {
 	http.HandleFunc("DELETE /item/{id}", dih.Execute)
 
 	http.HandleFunc("POST /order", coh.Execute)
-	http.HandleFunc("PATCH /order", uoh.Execute)
+	http.HandleFunc("PATCH /order/{id}", uoh.Execute)
 	http.HandleFunc("GET /orders", gaoh.Execute)
 
 	log.Println("Listening on port 8080")
