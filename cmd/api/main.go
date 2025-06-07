@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
+	"github.com/rogerioisj/soat-project/config"
 	"github.com/rogerioisj/soat-project/internal/adapters/inbound/http/handlers"
 	"github.com/rogerioisj/soat-project/internal/adapters/outbound/repositories/postgres"
 	"github.com/rogerioisj/soat-project/internal/core/services/item"
@@ -13,7 +14,13 @@ import (
 )
 
 func main() {
-	db := dataBaseConnection()
+	config, err := config.Load()
+
+	if err != nil {
+		log.Fatal("Failed to load configuration: ", err)
+	}
+
+	db := dataBaseConnection(&config)
 	defer db.Close()
 
 	userRepository := postgres.NewUserRepository(db)
@@ -63,15 +70,15 @@ func main() {
 	http.HandleFunc("GET "+prefix+"/docs/openapi.yaml", ssdh.File)
 	http.HandleFunc("GET /", ssdh.GetOpenAPISpec)
 
-	log.Println("Listening on port 8080")
-	log.Println("Read docs http://127.0.0.1:8080")
+	log.Println("Listening on port " + config.Port + " ...")
+	log.Println("Read docs " + config.Host + ":" + config.Port + "/")
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":"+string(config.Port), nil)
 }
 
-func dataBaseConnection() *sql.DB {
+func dataBaseConnection(config *config.Configuration) *sql.DB {
 	log.Println("Connecting to database ...")
-	connStr := "user=admin password=admin dbname=restaurant_db sslmode=disable"
+	connStr := "postgres://" + config.Database.User + ":" + config.Database.Password + "@" + config.Database.Host + ":" + config.Database.Port + "/restaurant_db?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
