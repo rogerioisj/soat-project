@@ -55,7 +55,7 @@ func (h *ServeSwaggerFileHandler) GetOpenAPISpec(w http.ResponseWriter, r *http.
     <div id="redoc-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/redoc@2.1.3/bundles/redoc.standalone.js"></script>
     <script>
-        Redoc.init('/api/docs/openapi.yaml', {
+        Redoc.init('/api/v1/docs/openapi.yaml', {
             theme: {
                 colors: {
                     primary: {

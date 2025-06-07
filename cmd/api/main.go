@@ -46,19 +46,21 @@ func main() {
 
 	ssdh := handlers.NewShowSwaggerDocHandler()
 
-	http.HandleFunc("GET /user/{cpf}", guh.Execute)
-	http.HandleFunc("POST /user", cuh.Execute)
+	prefix := "/api/v1"
 
-	http.HandleFunc("POST /item", cih.Execute)
-	http.HandleFunc("GET /itens", gih.Execute)
-	http.HandleFunc("PUT /item/{id}", uih.Execute)
-	http.HandleFunc("DELETE /item/{id}", dih.Execute)
+	http.HandleFunc("GET "+prefix+"/user/{cpf}", guh.Execute)
+	http.HandleFunc("POST "+prefix+"/user", cuh.Execute)
 
-	http.HandleFunc("POST /order", coh.Execute)
-	http.HandleFunc("PATCH /order/{id}", uoh.Execute)
-	http.HandleFunc("GET /orders", gaoh.Execute)
+	http.HandleFunc("POST "+prefix+"/item", cih.Execute)
+	http.HandleFunc("GET "+prefix+"/itens", gih.Execute)
+	http.HandleFunc("PUT "+prefix+"/item/{id}", uih.Execute)
+	http.HandleFunc("DELETE "+prefix+"/item/{id}", dih.Execute)
 
-	http.HandleFunc("GET /api/docs/openapi.yaml", ssdh.File)
+	http.HandleFunc("POST "+prefix+"/order", coh.Execute)
+	http.HandleFunc("PATCH "+prefix+"/order/{id}", uoh.Execute)
+	http.HandleFunc("GET "+prefix+"/orders", gaoh.Execute)
+
+	http.HandleFunc("GET "+prefix+"/docs/openapi.yaml", ssdh.File)
 	http.HandleFunc("GET /", ssdh.GetOpenAPISpec)
 
 	log.Println("Listening on port 8080")

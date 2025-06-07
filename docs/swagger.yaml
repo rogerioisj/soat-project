@@ -7,7 +7,7 @@ info:
     name: Rogerio Inacio
     email: rogerio.reaper@gmail.com
 servers:
-  - url: http://127.0.0.1:8080
+  - url: http://127.0.0.1:8080/api/v1
     description: Local Dev
 
 paths:
