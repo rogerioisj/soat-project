@@ -64,7 +64,7 @@ func main() {
 	http.HandleFunc("GET /", ssdh.GetOpenAPISpec)
 
 	log.Println("Listening on port 8080")
-	log.Println("GET http://127.0.0.1:8080")
+	log.Println("Read docs http://127.0.0.1:8080")
 
 	http.ListenAndServe(":8080", nil)
 }
