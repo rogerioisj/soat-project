@@ -8,15 +8,9 @@ import (
 )
 
 type Configuration struct {
-	Port     string `json:"port"`
-	Host     string `json:"host"`
-	Database struct {
-		Host     string `json:"host"`
-		Port     string `json:"port"`
-		User     string `json:"user"`
-		Password string `json:"password"`
-		Database string `json:"database"`
-	} `json:"database"`
+	Port        string `json:"port"`
+	Host        string `json:"host"`
+	DatabaseUrl string `json:"database_url"`
 }
 
 func (c *Configuration) Validate() error {
@@ -28,24 +22,8 @@ func (c *Configuration) Validate() error {
 		return fmt.Errorf("invalid host: %s", c.Host)
 	}
 
-	if c.Database.Host == "" {
-		return fmt.Errorf("invalid database host: %s", c.Database.Host)
-	}
-
-	if c.Database.Port == "" {
-		return fmt.Errorf("invalid database port: %v", c.Database.Port)
-	}
-
-	if c.Database.User == "" {
-		return fmt.Errorf("invalid database user: %s", c.Database.User)
-	}
-
-	if c.Database.Password == "" {
-		return fmt.Errorf("invalid database password: %s", c.Database.Password)
-	}
-
-	if c.Database.Database == "" {
-		return fmt.Errorf("invalid database name: %s", c.Database.Database)
+	if c.DatabaseUrl == "" {
+		return fmt.Errorf("invalid database host: %s", c.DatabaseUrl)
 	}
 
 	return nil
@@ -94,11 +72,7 @@ func loadEnvironment(config *Configuration) error {
 
 	config.Host = os.Getenv("HOST")
 	config.Port = os.Getenv("PORT")
-	config.Database.Host = os.Getenv("DB_HOST")
-	config.Database.Port = os.Getenv("DB_PORT")
-	config.Database.User = os.Getenv("DB_USER")
-	config.Database.Password = os.Getenv("DB_PASSWORD")
-	config.Database.Database = os.Getenv("DB_NAME")
+	config.DatabaseUrl = os.Getenv("DATABASE_URL")
 
 	if err := config.Validate(); err != nil {
 		return err
