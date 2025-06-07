@@ -68,7 +68,7 @@ func main() {
 	http.HandleFunc("GET "+prefix+"/orders", gaoh.Execute)
 
 	http.HandleFunc("GET "+prefix+"/docs/openapi.yaml", ssdh.File)
-	http.HandleFunc("GET /", ssdh.GetOpenAPISpec)
+	http.HandleFunc("GET /", ssdh.ServeBasicSwaggerUI)
 
 	log.Println("Listening on port " + config.Port + " ...")
 	log.Println("Read docs " + config.Host + ":" + config.Port + "/")
@@ -78,8 +78,10 @@ func main() {
 
 func dataBaseConnection(config *config.Configuration) *sql.DB {
 	log.Println("Connecting to database ...")
-	connStr := "postgres://" + config.Database.User + ":" + config.Database.Password + "@" + config.Database.Host + ":" + config.Database.Port + "/restaurant_db?sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
+
+	log.Println("Database URL:", config.DatabaseUrl)
+
+	db, err := sql.Open("postgres", config.DatabaseUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
