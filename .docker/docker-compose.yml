@@ -1,0 +1,41 @@
+name: "SOAT - Restaurant System"
+services:
+  postgres-db:
+    container_name: "postgres-db"
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: restaurant_db
+    ports:
+      - "5432:5432"
+    restart: "always"
+    networks:
+      - restaurant-network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "admin" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  api:
+    container_name: "restaurant-api"
+    build:
+      context: ./../
+      dockerfile: .docker/Dockerfile
+    environment:
+      PROJECT_ENV: "production"
+      HOST: "0.0.0.0"
+      PORT: "8080"
+      DATABASE_URL: "postgresql://admin:admin@postgres-db:5432/restaurant_db?sslmode=disable"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - restaurant-network
+networks:
+  restaurant-network:
+    driver: bridge
+    attachable: true
