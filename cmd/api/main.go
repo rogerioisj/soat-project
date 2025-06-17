@@ -73,7 +73,10 @@ func main() {
 	log.Println("Listening on port " + config.Port + " ...")
 	log.Println("Read docs " + config.Host + ":" + config.Port + "/")
 
-	http.ListenAndServe(":"+string(config.Port), nil)
+	err = http.ListenAndServe(":"+string(config.Port), nil)
+	if err != nil {
+		log.Fatal("Failed to start server: ", err)
+	}
 }
 
 func dataBaseConnection(config *config.Configuration) *sql.DB {
