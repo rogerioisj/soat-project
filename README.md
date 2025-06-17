@@ -7,7 +7,7 @@
 Este projeto tem como objetivo desenvolver um sistema de vendas de produtos em uma lanchonete. Inicialmente, focando apenas na jornada do cliente, desde a identificação, até a retirada do pedido.
 
 # Tecnologias Utilizadas
-- Go
+- Go 1.24
 - PostgreSQL
 - Docker
 
